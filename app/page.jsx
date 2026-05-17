@@ -22,7 +22,16 @@ export default function Page() {
         Chat per ogni meta,<br />
         spese condivise,<br />
         sottogruppi suggeriti,<br />
-        feedback post-viaggio.
+        feedback post-viaggio.<br /><br />
+        <div className="qr-block">
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fvoyage-next-five.vercel.app%2F&bgcolor=DCD8C0&color=082567&qzone=1&format=svg"
+            alt="QR code — voyage-next-five.vercel.app"
+            width={180}
+            height={180}
+          />
+          <div className="qr-label">Apri sul telefono</div>
+        </div>
       </aside>
     </main>
   );
