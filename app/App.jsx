@@ -76,6 +76,15 @@ export default function App() {
   const [tab, setTab] = React.useState('mete');
   const [destinations, setDestinations] = React.useState(SEED_DESTINATIONS);
   const [view, setView] = React.useState({ name: 'list' });
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const mq = window.matchMedia('(max-width: 820px)');
+    setIsMobile(mq.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   function open(destId) { setView({ name: 'dest', destId }); }
   function openInvite(invId) { setView({ name: 'invite-form', invId }); }
@@ -234,17 +243,28 @@ export default function App() {
     screen = <ProfileScreen />;
   }
 
+  const navBar = !hideNav && (
+    <GlassNav
+      tab={tab}
+      setTab={(t) => { setTab(t); setView({ name: 'list' }); }}
+      pendingInvites={PENDING_INVITES.length}
+    />
+  );
+
+  if (isMobile) {
+    return (
+      <div style={{ position: 'fixed', inset: 0, overflow: 'hidden' }}>
+        {screen}
+        {navBar}
+      </div>
+    );
+  }
+
   return (
     <IOSDevice width={402} height={874}>
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', borderRadius: 48 }}>
         {screen}
-        {!hideNav && (
-          <GlassNav
-            tab={tab}
-            setTab={(t) => { setTab(t); setView({ name: 'list' }); }}
-            pendingInvites={PENDING_INVITES.length}
-          />
-        )}
+        {navBar}
       </div>
     </IOSDevice>
   );
